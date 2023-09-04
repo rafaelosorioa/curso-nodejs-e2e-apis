@@ -1,14 +1,24 @@
 const request = require('supertest');
 const express = require('express');
 
-const app = express();
+let app = null;
+let server = null;
+let api;
 
-app.get('/hello', (req, res) => {
-  res.status(200).json({ name: 'rafa' });
+beforeEach(() => {
+  app = express();
+
+  app.get('/hello', (req, res) => {
+    res.status(200).json({ name: 'rafa' });
+  });
+
+  server = app.listen(9000);
+  api = request(app);
 });
 
-app.listen(9000);
-const api = request(app);
+afterEach(() => {
+  server.close();
+});
 
 describe('test for app', () => {
   test('GET /hello', async () => {
