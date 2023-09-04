@@ -1,12 +1,13 @@
 const request = require('supertest');
-const express = require('express');
+
+const createApp = require('../src/app');
 
 let app = null;
 let server = null;
 let api;
 
 beforeEach(() => {
-  app = express();
+  app = createApp();
 
   app.get('/hello', (req, res) => {
     res.status(200).json({ name: 'rafa' });
