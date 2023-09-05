@@ -8,7 +8,7 @@ let app = null;
 let server = null;
 let api;
 
-beforeEach(() => {
+beforeAll(() => {
   app = createApp();
 
   app.get('/hello', (req, res) => {
@@ -19,7 +19,7 @@ beforeEach(() => {
   api = request(app);
 });
 
-afterEach(() => {
+afterAll(() => {
   server.close();
 });
 
