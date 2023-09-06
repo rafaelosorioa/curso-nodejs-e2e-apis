@@ -35,4 +35,30 @@ describe('test for products endpoint', () => {
       expect(body[0].category).toBeTruthy();
     });
   });
+
+  describe('GET /products pagination', () => {
+    it('should return products limit=2 offset=0', async () => {
+      const limit = 2;
+      const offset = 0;
+
+      const { statusCode, body } = await api.get(
+        `/api/v1/products?limit=${limit}&offset=${offset}`
+      );
+
+      expect(statusCode).toEqual(200);
+      expect(body.length).toEqual(limit);
+    });
+
+    it('should return products limit=2 offset=2', async () => {
+      const limit = 2;
+      const offset = 2;
+
+      const { statusCode, body } = await api.get(
+        `/api/v1/products?limit=${limit}&offset=${offset}`
+      );
+
+      expect(statusCode).toEqual(200);
+      expect(body.length).toEqual(limit);
+    });
+  });
 });
