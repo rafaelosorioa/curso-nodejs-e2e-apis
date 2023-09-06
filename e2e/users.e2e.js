@@ -3,19 +3,23 @@ const request = require('supertest');
 const createApp = require('../src/app');
 // Import the models from the DB
 const { models } = require('./../src/db/sequelize');
+const { upSeed, downSeed } = require('./utils/seed');
 
 let app = null;
 let server = null;
 let api;
 
-beforeAll(() => {
+beforeAll(async () => {
   app = createApp();
 
   server = app.listen(9000);
   api = request(app);
+
+  await upSeed();
 });
 
-afterAll(() => {
+afterAll(async () => {
+  await downSeed();
   server.close();
 });
 
@@ -76,7 +80,9 @@ describe('test for users', () => {
       const { statusCode, body } = await api
         .post('/api/v1/users')
         .send(inputData);
-      const user = models.User.findByPk(body.id);
+
+      const user = await models.User.findByPk(body.id);
+
       expect(user).toBeTruthy();
       expect(statusCode).toEqual(201);
       expect(user.email).toEqual(inputData.email);
