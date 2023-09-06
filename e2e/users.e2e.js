@@ -11,10 +11,6 @@ let api;
 beforeAll(() => {
   app = createApp();
 
-  app.get('/hello', (req, res) => {
-    res.status(200).json({ name: 'rafa' });
-  });
-
   server = app.listen(9000);
   api = request(app);
 });
@@ -41,7 +37,7 @@ describe('test for users', () => {
   describe('GET /users', () => {});
 
   describe('POST /users', () => {
-    test('should return a 400 bad request', async () => {
+    test('should return a 400 bad request invalid password', async () => {
       // Arrange
       const inputData = {
         email: 'test@test.com',
@@ -56,7 +52,7 @@ describe('test for users', () => {
       expect(body.message).toMatch(/password/);
     });
 
-    test('should return a 400 bad request', async () => {
+    test('should return a 400 bad request invalid email', async () => {
       // Arrange
       const inputData = {
         email: '-----',
@@ -70,7 +66,23 @@ describe('test for users', () => {
       expect(statusCode).toEqual(400);
       expect(body.message).toMatch(/email/);
     });
-    //TODO:valid response and save test
+
+    it('should create valid user', async () => {
+      const inputData = {
+        email: 'test@test.com',
+        password: 'test@123',
+      };
+
+      const { statusCode, body } = await api
+        .post('/api/v1/users')
+        .send(inputData);
+      const user = models.User.findByPk(body.id);
+      expect(user).toBeTruthy();
+      expect(statusCode).toEqual(201);
+      expect(user.email).toEqual(inputData.email);
+      expect(user.role).toEqual('admin');
+    });
   });
+
   describe('PUT /users', () => {});
 });
