@@ -3,7 +3,8 @@ const request = require('supertest');
 const createApp = require('../src/app');
 // Import the models from the DB
 const { models } = require('./../src/db/sequelize');
-const { upSeed, downSeed } = require('./utils/seed');
+// const { upSeed, downSeed } = require('./utils/seed');
+const { upSeed, downSeed } = require('./utils/umzug');
 
 let app = null;
 let server = null;
