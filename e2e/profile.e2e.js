@@ -32,13 +32,13 @@ describe('GET /my-user', () => {
       password: 'admin123',
     };
 
-    afterAll(() => {
-      accessToken = null;
-    });
-
     const { body } = await api.post('/api/v1/auth/login').send(inputUser);
 
     accessToken = body.access_token;
+  });
+
+  afterAll(() => {
+    accessToken = null;
   });
 
   it('should return 401 invalid token', async () => {
