@@ -1,7 +1,21 @@
-require('dotenv').config();
+// Check environment
+const env = process.env.NODE_ENV || 'dev';
+// Files for environments
+const envs = {
+  dev: '.env',
+  e2e: '.env.e2e',
+};
+// Options for the config
+const options = {};
+// Set the env file according our environment
+if (envs[env]) {
+  options.path = envs[env];
+}
+
+require('dotenv').config(options);
 
 const config = {
-  env: process.env.NODE_ENV || 'dev',
+  env,
   isProd: process.env.NODE_ENV === 'production',
   port: process.env.PORT || 3000,
   dbUrl: process.env.DATABASE_URL,
@@ -9,6 +23,8 @@ const config = {
   jwtSecret: process.env.JWT_SECRET,
   smtpEmail: process.env.SMTP_EMAIL,
   smtpPassword: process.env.SMTP_PASSWORD,
-}
+};
+
+console.log('Config', config);
 
 module.exports = { config };

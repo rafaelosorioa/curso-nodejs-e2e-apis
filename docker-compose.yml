@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 services:
   postgres:
@@ -12,6 +12,16 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
 
+  postgres-e2e:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_DB=db_e2e
+      - POSTGRES_USER=e2e
+      - POSTGRES_PASSWORD=e2e123
+    ports:
+      # use port 5434 to no conflict between DB but internal still uses 5432
+      - 5434:5432
+
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -19,5 +29,3 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
       - 5050:80
-
-
